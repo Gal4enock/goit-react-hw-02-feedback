@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
-import Button from '../Button/Button';
+import FeedbackOptions from '../FeedbackOptions/FeedbackOptions';
 import Statistics from '../Statistics/Statistics';
-import style from './App.module.css'
+import Notification from '../Notification/Notification';
+import style from './App.module.css';
+
+const options = {
+  en: {
+    GOOD: 'good',
+    BAD: 'bad',
+    NEUTRAL: 'neutral'
+  },
+  ru: {
+    GOOD: 'хорошо',
+    BAD: 'плохо',
+    NEUTRAL: 'так се'
+ }
+
+}
 
 class App extends Component {
   state = {
@@ -10,25 +25,27 @@ class App extends Component {
     bad: 0
   }
   
-  addFeedback = (e) => {
+  onLeaveFeedback = (e) => {
     const feedbackType = e.target.textContent;
     console.log(feedbackType);
     switch (feedbackType) {
       case "good":
-        this.setState({
-          good: this.state.good + 1
-        });
+        this.setState((state) => ({
+          good: state.good + 1
+        }));
         break;
       case "neutral":
-        this.setState({
-          neutral: this.state.neutral + 1
-        });
+        this.setState((state) => ({
+          neutral: state.neutral + 1
+        }));
         break;
       case "bad":
-        this.setState({
-          bad: this.state.bad + 1
-        });
+        this.setState((state) => ({
+          bad: state.bad + 1
+        }));
         break;
+      default:
+        console.log('Hello!');
     }
   }
 
@@ -47,26 +64,19 @@ class App extends Component {
 
   render() {
     const { good, neutral, bad } = this.state;
-    const total = this.countTotalFeedback();
-    const perc = this.countPositiveFeedbackPercentage();
-    return (
-      <div className={style.box} onClick = {this.addFeedback}>
-        <h1>Please leave feedback</h1>
-          <Button  name="good" />
-          <Button name="neutral" />
-          <Button name="bad" />
-        <h2>Statistics</h2>
-        <ul>
-          <Statistics name="Good:" value={good} />
-          <Statistics name="Neutral:" value={neutral} />
-          <Statistics name="Bad:" value={bad} />
-          <Statistics name="Total:" value={total} />
-          <Statistics name = "Positive feedback:" value = {perc} />
-        </ul> 
+    // const total = this.countTotalFeedback();
+    // const perc = this.countPositiveFeedbackPercentage();
+        return (  
+      <div className={style.box} >
+          <h1>Please leave feedback</h1>
+            
+          <FeedbackOptions options={options.en} onLeaveFeedback={this.onLeaveFeedback} />
+          
+          {!this.countTotalFeedback() ? <Notification message="No feedback given" /> : <Statistics good={good} neutral={neutral} bad={bad} total={this.countTotalFeedback()} positivePercentage={this.countPositiveFeedbackPercentage()} />}
       </div>
     )
     
-  };
+  }
 }
 
 export default App;

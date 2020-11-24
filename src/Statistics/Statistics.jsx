@@ -1,10 +1,18 @@
 import React from 'react';
-import style from '../Statistics/Statistics.module.css'
+import Item from '../Item/Item.jsx';
+import Section from '../Section/Section'
 
-
-const Statistics = function ({ value, name }) {
+const Statistics = function (prop) {
   return (
-    <li className={style.item}>{name} {value}</li>
+    <Section title="Statistics">
+        <ul>
+          <Item name="Good:" value={prop.good} />
+          <Item name="Neutral:" value={prop.neutral} />
+          <Item name="Bad:" value={prop.bad} />
+          <Item name="Total:" value={prop.total} />
+          <Item name = "Positive feedback:" value = {prop.positivePercentage} />
+        </ul> 
+   </Section>
  )
 }
-export default Statistics
+export default Statistics;
